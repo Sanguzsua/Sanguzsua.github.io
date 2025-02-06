@@ -6,9 +6,8 @@ canvas.height = 480;
 
 let player = { x: 140, y: 400, width: 20, height: 20, speed: 5 };
 let ball = { x: player.x + 5, y: player.y - 10, radius: 5, speedY: 0, inMotion: false };
-let rival = { x: 100, y: 100, width: 40, height: 20, speed: 2, direction: 1 };
-let goal = { x: 90, y: 10, width: 140, height: 10 };
 let goalkeeper = { x: 130, y: 20, width: 40, height: 10, speed: 2, direction: 1 };
+let goal = { x: 90, y: 10, width: 140, height: 10 };
 
 function drawPlayer() {
     ctx.fillStyle = "blue";
@@ -20,11 +19,6 @@ function drawBall() {
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fill();
-}
-
-function drawRival() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(rival.x, rival.y, rival.width, rival.height);
 }
 
 function drawGoal() {
@@ -62,14 +56,7 @@ function update() {
     drawGoal();
     drawPlayer();
     drawBall();
-    drawRival();
     drawGoalkeeper();
-
-    // Movimiento del rival
-    rival.x += rival.speed * rival.direction;
-    if (rival.x <= 0 || rival.x + rival.width >= canvas.width) {
-        rival.direction *= -1;
-    }
 
     // Movimiento del portero
     goalkeeper.x += goalkeeper.speed * goalkeeper.direction;
@@ -93,15 +80,21 @@ function update() {
     requestAnimationFrame(update);
 }
 
-document.addEventListener("keydown", function(event) {
-    if (event.key === "ArrowLeft" && player.x > 0) player.x -= player.speed;
-    if (event.key === "ArrowRight" && player.x < canvas.width - player.width) player.x += player.speed;
-    if (event.key === "ArrowUp" && player.y > 0) player.y -= player.speed;
-    if (event.key === "ArrowDown" && player.y < canvas.height - player.height) player.y += player.speed;
-    if (event.key === " " && !ball.inMotion) { // Disparo con espacio
+// Controles para móviles
+document.getElementById("leftBtn").addEventListener("click", function() {
+    if (player.x > 0) player.x -= player.speed;
+});
+
+document.getElementById("rightBtn").addEventListener("click", function() {
+    if (player.x < canvas.width - player.width) player.x += player.speed;
+});
+
+document.getElementById("shootBtn").addEventListener("click", function() {
+    if (!ball.inMotion) {
         ball.inMotion = true;
         ball.speedY = -3;
     }
 });
 
 update();
+
