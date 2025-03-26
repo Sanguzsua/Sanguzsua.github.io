@@ -160,10 +160,18 @@ function startGame() {
 
 function endGame() {
     clearInterval(gameInterval);
-    alert(`¡Juego terminado!\nPuntos obtenidos: ${score}`);
+    Swal.fire({
+        title: "¡Juego terminado!",
+        text: `Puntos obtenidos: ${score}`,
+        icon: "info",
+        confirmButtonText: "Reintentar"
+    }).then(() => {
+        restartBtn.style.display = "block";
+    });
+
     addDoc(collection(db, "puntuaciones"), { usuario: auth.currentUser.email, puntuacion: score });
-    restartBtn.style.display = "block";
 }
+
 
 
 // Escuchar puntuaciones y ordenarlas de mayor a menor
