@@ -160,10 +160,11 @@ function startGame() {
 
 function endGame() {
     clearInterval(gameInterval);
-    alert("¡Perdiste! Puntos: " + score);
+    alert(`¡Juego terminado!\nPuntos obtenidos: ${score}`);
     addDoc(collection(db, "puntuaciones"), { usuario: auth.currentUser.email, puntuacion: score });
     restartBtn.style.display = "block";
 }
+
 
 // Escuchar puntuaciones y ordenarlas de mayor a menor
 function listenForScores() {
