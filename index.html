@@ -29,15 +29,25 @@
         <!-- Contenedor de la tabla -->
         <div id="scoreContainer">
             <h2>🏆 Tabla de Puntuaciones</h2>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Puntos</th>
-                    </tr>
-                </thead>
-                <tbody id="scoreTable"></tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de alerta personalizada -->
+    <div id="customAlert" class="modal">
+        <div class="modal-content">
+            <p id="alertMessage"></p>
+            <button id="closeAlert">Aceptar</button>
         </div>
     </div>
 </body>
