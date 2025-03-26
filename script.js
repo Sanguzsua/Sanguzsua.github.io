@@ -1,7 +1,7 @@
 // Importar Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -107,9 +107,11 @@ function update() {
     ball.y += ball.dy;
     
     if (ball.y - ball.radius <= 10 && ball.x >= 80 && ball.x <= 240) {
-        score++;
+        score++; 
+        timeLeft += 2; // Aumenta 2 segundos por cada gol
         resetBall();
     }
+    
     if (
         ball.x + ball.radius > goalie.x &&
         ball.x - ball.radius < goalie.x + goalie.width &&
@@ -126,8 +128,6 @@ canvas.addEventListener("touchstart", () => {
 canvas.addEventListener("click", () => {
     ball.dy = -ball.speed;
 });
-
-
 
 function resetBall() {
     ball.x = 160;
@@ -158,7 +158,7 @@ function startGame() {
     }, 1000 / 60);
 }
 
-function endGame() {
+async function endGame() {
     clearInterval(gameInterval);
     Swal.fire({
         title: "¡Juego terminado!",
@@ -169,10 +169,14 @@ function endGame() {
         restartBtn.style.display = "block";
     });
 
-    addDoc(collection(db, "puntuaciones"), { usuario: auth.currentUser.email, puntuacion: score });
+    const userEmail = auth.currentUser.email;
+    const userRef = doc(db, "puntuaciones", userEmail);
+    const userDoc = await getDoc(userRef);
+
+    if (!userDoc.exists() || score > userDoc.data().puntuacion) {
+        await setDoc(userRef, { usuario: userEmail, puntuacion: score }, { merge: true });
+    }
 }
-
-
 
 // Escuchar puntuaciones y ordenarlas de mayor a menor
 function listenForScores() {
