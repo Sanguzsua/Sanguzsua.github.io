@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Futbolito</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" defer src="script.js"></script>
+</head>
+<body>
+    <div id="loginScreen">
+        <h2>Iniciar Sesión</h2>
+        <input type="email" id="email" placeholder="Correo">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button id="loginBtn">Ingresar</button>
+        <button id="registerBtn">Registrarse</button>
+    </div>
+
+    <!-- Contenedor del juego y la tabla -->
+    <div id="gameScreen" style="display: none;">
+        <button id="logoutBtn">Cerrar Sesión</button>
+        <p>Oprime "enter" para lanzar el balon</p>
+
+        <div id="gameContainer">
+            <canvas id="gameCanvas"></canvas>
+            <button id="restartBtn" style="display: none;">Reiniciar</button>
+        </div>
+
+        <!-- Contenedor de la tabla -->
+        <div id="scoreContainer">
+            <h2>🏆 Tabla de Puntuaciones</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
+                <tbody id="scoreTable"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
